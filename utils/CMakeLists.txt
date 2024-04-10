@@ -124,13 +124,6 @@ add_custom_command( OUTPUT aompversion.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/" ${CMAKE_CURRENT_BINARY_DIR}/aompversion > aompversion.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/aompversion)
 
-add_custom_command( OUTPUT clang-ocl
-   COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/clang-ocl ${CMAKE_CURRENT_BINARY_DIR}/clang-ocl
-   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/clang-ocl)
-add_custom_command( OUTPUT clang-ocl.phantom
-   COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/clang-ocl > clang-ocl.phantom
-   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/clang-ocl)
-
 add_custom_command( OUTPUT modulefile
    COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/modulefile ${CMAKE_CURRENT_BINARY_DIR}/modulefile
    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/modulefile)
@@ -138,7 +131,7 @@ add_custom_command( OUTPUT modulefile.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/modulefile > modulefile.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/modulefile)
 
-add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom clang-ocl.phantom modulefile.phantom aompExtractRegion.phantom)
+add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom modulefile.phantom aompExtractRegion.phantom)
 
 install(PROGRAMS 
    ${CMAKE_CURRENT_BINARY_DIR}/gpurun
@@ -149,6 +142,5 @@ install(PROGRAMS
    ${CMAKE_CURRENT_BINARY_DIR}/aompversion
    ${CMAKE_CURRENT_SOURCE_DIR}/bin/blt.patch
    ${CMAKE_CURRENT_SOURCE_DIR}/bin/raja.patch
-   ${CMAKE_CURRENT_BINARY_DIR}/clang-ocl
    ${CMAKE_CURRENT_BINARY_DIR}/modulefile
    DESTINATION "${DEVEL_PACKAGE}${CMAKE_INSTALL_BINDIR}")

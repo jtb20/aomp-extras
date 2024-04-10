@@ -82,13 +82,6 @@ endif()
 set(SED_INSTALL_DIR '$ENV{SED_INSTALL_DIR}')
 
 # edit in place to preserve permissions
-add_custom_command( OUTPUT cloc.sh
-   COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/cloc.sh ${CMAKE_CURRENT_BINARY_DIR}/cloc.sh
-   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/cloc.sh)
-add_custom_command( OUTPUT cloc.sh.phantom
-   COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/cloc.sh > cloc.sh.phantom
-   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/cloc.sh)
-
 add_custom_command( OUTPUT gpurun
    COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/gpurun ${CMAKE_CURRENT_BINARY_DIR}/gpurun
    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/gpurun)
@@ -152,10 +145,9 @@ add_custom_command( OUTPUT modulefile.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/modulefile > modulefile.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/modulefile)
 
-add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom cloc.sh.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom mymcpu.phantom aompversion.phantom clang-ocl.phantom modulefile.phantom aompExtractRegion.phantom)
+add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom mymcpu.phantom aompversion.phantom clang-ocl.phantom modulefile.phantom aompExtractRegion.phantom)
 
 install(PROGRAMS 
-   ${CMAKE_CURRENT_BINARY_DIR}/cloc.sh
    ${CMAKE_CURRENT_BINARY_DIR}/gpurun
    ${CMAKE_CURRENT_BINARY_DIR}/raja_build.sh
    ${CMAKE_CURRENT_BINARY_DIR}/kokkos_build.sh

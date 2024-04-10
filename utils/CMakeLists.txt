@@ -89,6 +89,13 @@ add_custom_command( OUTPUT gpurun.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/gpurun > gpurun.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gpurun)
 
+add_custom_command( OUTPUT rebundle_hip_lib.sh
+   COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/rebundle_hip_lib.sh ${CMAKE_CURRENT_BINARY_DIR}/rebundle_hip_lib.sh
+   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/rebundle_hip_lib.sh)
+add_custom_command( OUTPUT rebundle_hip_lib.sh.phantom
+	COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_LLVM_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/rebundle_hip_lib.sh> rebundle_hip_lib.sh.phantom
+   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/rebundle_hip_lib.sh)
+
 add_custom_command( OUTPUT raja_build.sh
    COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/raja_build.sh ${CMAKE_CURRENT_BINARY_DIR}/raja_build.sh
    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/raja_build.sh)
@@ -124,10 +131,11 @@ add_custom_command( OUTPUT modulefile.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/modulefile > modulefile.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/modulefile)
 
-add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom modulefile.phantom )
+add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom rebundle_hip_lib.sh.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom modulefile.phantom )
 
 install(PROGRAMS 
    ${CMAKE_CURRENT_BINARY_DIR}/gpurun
+   ${CMAKE_CURRENT_BINARY_DIR}/rebundle_hip_lib.sh
    ${CMAKE_CURRENT_BINARY_DIR}/raja_build.sh
    ${CMAKE_CURRENT_BINARY_DIR}/kokkos_build.sh
    ${CMAKE_CURRENT_BINARY_DIR}/aompcc

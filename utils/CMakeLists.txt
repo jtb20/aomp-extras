@@ -110,13 +110,6 @@ add_custom_command( OUTPUT aompcc.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/aompcc  > aompcc.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/aompcc)
 
-add_custom_command( OUTPUT aompExtractRegion
-   COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/aompExtractRegion ${CMAKE_CURRENT_BINARY_DIR}/aompExtractRegion
-   DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/aompExtractRegion)
-add_custom_command( OUTPUT aompExtractRegion.phantom
-   COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/aompExtractRegion > aompExtractRegion.phantom
-   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/aompExtractRegion)
-
 add_custom_command( OUTPUT aompversion
    COMMAND /bin/cp -p ${CMAKE_CURRENT_SOURCE_DIR}/bin/aompversion ${CMAKE_CURRENT_BINARY_DIR}/aompversion
    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bin/aompversion)
@@ -131,14 +124,13 @@ add_custom_command( OUTPUT modulefile.phantom
    COMMAND /bin/sed -i -e "s/X\\.Y\\-Z/${version_str}/g" -e "s/_AOMP_INSTALL_DIR_/${SED_INSTALL_DIR}/g" ${CMAKE_CURRENT_BINARY_DIR}/modulefile > modulefile.phantom
    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/modulefile)
 
-add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom modulefile.phantom aompExtractRegion.phantom)
+add_custom_target(utils_scripts ALL DEPENDS gpurun.phantom raja_build.sh.phantom kokkos_build.sh.phantom aompcc.phantom aompversion.phantom modulefile.phantom )
 
 install(PROGRAMS 
    ${CMAKE_CURRENT_BINARY_DIR}/gpurun
    ${CMAKE_CURRENT_BINARY_DIR}/raja_build.sh
    ${CMAKE_CURRENT_BINARY_DIR}/kokkos_build.sh
    ${CMAKE_CURRENT_BINARY_DIR}/aompcc
-   ${CMAKE_CURRENT_BINARY_DIR}/aompExtractRegion
    ${CMAKE_CURRENT_BINARY_DIR}/aompversion
    ${CMAKE_CURRENT_SOURCE_DIR}/bin/blt.patch
    ${CMAKE_CURRENT_SOURCE_DIR}/bin/raja.patch

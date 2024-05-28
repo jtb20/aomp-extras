@@ -28,7 +28,7 @@ pr:
   autoCancel: true
   branches:
     include:
-    - develop
+    - aomp-dev
   paths:
     exclude:
     - .github

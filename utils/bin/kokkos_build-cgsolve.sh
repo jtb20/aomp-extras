@@ -64,7 +64,7 @@ if [ "$1" == "clean" ]; then
 fi
 
 # Get the source code
-git clone $KOKKOS_EXAMPLES_REPO
+git clone $KOKKOS_EXAMPLES_REPO $KOKKOS_EXAMPLES_SOURCE_DIR
 
 # Change to the directory
 cd $KOKKOS_EXAMPLES_SOURCE_DIR || exit 1
@@ -78,6 +78,9 @@ cd cgsolve || exit 1
 sed -i "s/amdclang++/${COMPILERNAME_TO_USE}/g" ../Makefile.inc
 # Do not use debug info for the time being.
 sed -i "s/-O3 -g/-O3/g" Makefile
+# Replace hard coded gfx90a with AOMP_GPU env var
+echo "updating Makefile.inc for AOMP_GPU=$AOMP_GPU"
+sed -i "s/-march=gfx90a/-march=$AOMP_GPU/" ../Makefile.inc
 
 cmd="PATH=$AOMP/bin:$PATH CXX=clang++ make KOKKOS_PATH=$KOKKOS_SOURCE_DIR arch=MI250x backend=ompt comp=rocmclang"
 
